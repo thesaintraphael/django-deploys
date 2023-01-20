@@ -120,6 +120,17 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
+STATIC_URL = "/static/"
+if DEBUG:
+    STATICFILES_DIRS = BASE_DIR / "static"
+else:
+    STATIC_ROOT = BASE_DIR / "static"
+
+MEDIA_URL = "/media/"
+
+MEDIA_ROOT = BASE_DIR / "media"
+
+
 CELERY_BROKER_URL = get_env_variable(
     "CELERY_BROKER_URL",
 )
