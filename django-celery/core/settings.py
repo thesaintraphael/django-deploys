@@ -68,12 +68,12 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": get_env_variable("DB_ENGINE"),
-        "NAME": get_env_variable("DB_NAME"),
-        "USER": get_env_variable("DB_USER"),
-        "PASSWORD": get_env_variable("DB_PASSWORD"),
-        "HOST": get_env_variable("DB_HOST"),
-        "PORT": get_env_variable("DB_PORT"),
+        "ENGINE": get_env_variable("POSTGRES_ENGINE"),
+        "NAME": get_env_variable("POSTGRES_DB"),
+        "USER": get_env_variable("POSTGRES_USER"),
+        "PASSWORD": get_env_variable("POSTGRES_PASSWORD"),
+        "HOST": get_env_variable("POSTGRES_HOST"),
+        "PORT": get_env_variable("POSTGRES_PORT"),
     }
 }
 

@@ -15,6 +15,8 @@ def send_email():
 
     email_to = get_env_variable("EMAIL_TO")
 
-    EmailMessage(subject="Test email", body="This is a test email", to=(email_to,))
+    EmailMessage(
+        subject="Test email", body="This is a test email", to=(email_to,)
+    ).send(fail_silently=False)
 
     logger.info("Email is sent")

@@ -1,0 +1,66 @@
+version: "3"
+
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    restart: "always"
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./nginx/vhost/:/etc/nginx/vhost.d:ro
+      - ./nginx/conf.d/client_max_body_size.conf:/etc/nginx/conf.d/client_max_body_size.conf:ro
+      - ./static/:/settings/static
+      - ./media/:/settings/media
+      - ./nginx/proxy.conf/:/etc/nginx/proxy.conf
+
+  postgres:
+    image: postgres:13.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file: .env
+    environment:
+      - LC_ALL=C.UTF-8
+
+  redis:
+    image: redis:6-alpine
+
+  web:
+    container_name: core
+    build: .
+    restart: "always"
+    env_file: .env
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - "postgres"
+      - "redis"
+
+  celery_beat:
+    restart: always
+    build:
+      context: .
+    command: celery -A core beat -l INFO
+    volumes:
+      - .:/django
+    container_name: celery_beat_con
+    depends_on:
+      - postgres
+      - redis
+      - web
+    env_file: .env
+  celery_worker:
+    restart: always
+    build:
+      context: .
+    command: celery -A core worker -l INFO
+    container_name: celery_worker_con
+    depends_on:
+      - postgres
+      - redis
+      - web
+
+volumes:
+  postgres_data:
