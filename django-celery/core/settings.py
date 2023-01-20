@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from .env import get_env_variable
 
@@ -122,13 +123,13 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 STATIC_URL = "/static/"
 if DEBUG:
-    STATICFILES_DIRS = BASE_DIR / "static"
+    STATICFILES_DIRS = os.path.join(BASE_DIR, "media")
 else:
-    STATIC_ROOT = BASE_DIR / "static"
+    STATIC_ROOT = os.path.join(BASE_DIR, "media")
 
 MEDIA_URL = "/media/"
 
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
 CELERY_BROKER_URL = get_env_variable(
